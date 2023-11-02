@@ -21,9 +21,8 @@ permissions:
     id-token: write
     contents: read
 
-jobs:
-  build-and-deploy:
-    name: Build and deploy into AKS
+  jobs:
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
