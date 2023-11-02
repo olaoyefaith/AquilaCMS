@@ -116,7 +116,7 @@ jobs:
         - name: Replace Variables in terraform.tfvars
           uses: datamonsters/replace-action@v2
           with:
-            files: infra/terraform.tfvars
+            files: infrastructure/config.tfvars
             replacements: |
               __DOCKER_REGISTRY_SERVER_PASSWORD__=${{ secrets.DOCKER_REGISTRY_SERVER_PASSWORD }},__DOCKER_REGISTRY_SERVER_URL__= ${{ secrets.DOCKER_REGISTRY_SERVER_URL }}, __DOCKER_REGISTRY_SERVER_USERNAME__=${{ secrets.DOCKER_REGISTRY_SERVER_USERNAME }} ,__linux_fx_version__=${{ env.DOCKER_IMAGE }}
               
@@ -127,7 +127,7 @@ jobs:
         - name: Terraform fmt
           id: fmt
           run: terraform fmt
-          working-directory: infra
+          working-directory: infrastructure
           continue-on-error: true
   
         - name: Terraform Init (Azure Backend)
@@ -142,11 +142,11 @@ jobs:
             ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
             ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
             ARM_USE_OIDC: true
-          working-directory: SimpleApp_Terraform
+          working-directory: infrastructure
   
         - name: Terraform Validate
           run: terraform validate -no-color
-          working-directory: SimpleApp_Terraform
+          working-directory: infrastructure
           
         - name: Terraform Plan
           id: plan
@@ -155,25 +155,25 @@ jobs:
             ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
             ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
             ARM_USE_OIDC: true
-          run: terraform plan -var-file="terraform.tfvars"
-          working-directory: SimpleApp_Terraform
+          run: terraform plan -var-file="config.tfvars"
+          working-directory: infrastructure
           continue-on-error: true
   
-        # - name: Terraform apply
-        #   run: terraform apply -auto-approve
-        #   working-directory: infra
-        #   env:
-        #    ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-        #    ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        #    ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-        #    ARM_USE_OIDC: true
-  
-        - name: Terraform destroy
-          run: terraform destroy -auto-approve
-          working-directory: SimpleApp_Terraform
+        - name: Terraform apply
+          run: terraform apply -auto-approve
+          working-directory: infrastructure
           env:
            ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
            ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
            ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
            ARM_USE_OIDC: true
+  
+        # - name: Terraform destroy
+        #   run: terraform destroy -auto-approve
+        #   working-directory: SimpleApp_Terraform
+        #   env:
+        #    ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        #    ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        #    ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+        #    ARM_USE_OIDC: true
    
