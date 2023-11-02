@@ -18,11 +18,7 @@ jobs:
     steps:
       - name: Set Date
         id: set_date
-        run: |
-          current_version=$(cat VERSION)
-          new_version=$(echo "$current_version + 0.1" | bc)
-          echo $new_version > VERSION
-          echo "BUILD_VERSION=$new_version" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -47,14 +43,14 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.BUILD_VERSION }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.IMAGE_TAG }}
           file: AquilaCMS/Dockerfile
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         continue-on-error: true
         with:
-          image-ref: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.BUILD_VERSION }}
+          image-ref: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{env.IMAGE_TAG }}
           format: table
           exit-code: "1"
           ignore-unfixed: true
@@ -62,7 +58,7 @@ jobs:
           severity: MEDIUM,HIGH,CRITICAL
 
       - name: Set Docker Image Output
-        run: echo "DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.BUILD_VERSION }}" >> $GITHUB_ENV
+        run: echo "DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
 
       - name: Upload Docker image
         uses: actions/upload-artifact@v2
