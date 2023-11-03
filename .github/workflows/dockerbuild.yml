@@ -9,6 +9,7 @@ on:
       - none
 
 env:
+  # DOCKER_IMAGE: ""
   DOCKER_IMAGE_NAME: aquilacms
   LOCATION: westeurope
   INFRA_RESOURCE_GROUP: tfstate-resourcegroup
@@ -73,18 +74,22 @@ jobs:
 
       - name: Set Docker Image Output
         run: echo "DOCKER_IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-
+        id: set-docker-image
+        
   deploy-app-service:
        name: Deploy three tier application to azure
        runs-on: ubuntu-latest
        needs:
         - build-and-deploy
-       env:
-          DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      #  env:
+      #     DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           
        steps:
         - name: Checkout code
           uses: actions/checkout@v2
+
+        - name: Set DOCKER_IMAGE environment variable
+          run: echo "DOCKER_IMAGE=${{ needs.set-docker-image.outputs.DOCKER_IMAGE }}" >> $GITHUB_ENV
 
         - name: Login to Azure
           uses: azure/login@v1
