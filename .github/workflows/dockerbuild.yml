@@ -79,9 +79,9 @@ jobs:
        runs-on: ubuntu-latest
        needs:
         - build-and-deploy
-        env:
+       env:
           DOCKER_IMAGE = ${{ needs.build-and-deploy.outputs.DOCKER_IMAGE }}
-
+          
        steps:
         - name: Checkout code
           uses: actions/checkout@v2
