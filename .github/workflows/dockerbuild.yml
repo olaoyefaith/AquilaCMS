@@ -80,7 +80,7 @@ jobs:
        needs:
         - build-and-deploy
        env:
-          DOCKER_IMAGE: ${{ needs.build-and-deploy.outputs.DOCKER_IMAGE }}
+          DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           
        steps:
         - name: Checkout code
