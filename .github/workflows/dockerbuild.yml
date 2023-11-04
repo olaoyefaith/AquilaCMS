@@ -137,7 +137,9 @@ jobs:
           with:
             files: infrastructure/config.tfvars
             replacements: |
-              __DOCKER_REGISTRY_SERVER_PASSWORD__=${{ secrets.DOCKERHUB_TOKEN }},__DOCKER_REGISTRY_SERVER_URL__= ${{ secrets.DOCKER_REGISTRY_SERVER_URL }}, __DOCKER_REGISTRY_SERVER_USERNAME__=${{ secrets.DOCKERHUB_USERNAME }} ,__linux_fx_version__= "DOCKER|${{ env.DOCKER_IMAGE }}"
+                __linux_fx_version__= "DOCKER|${{ env.DOCKER_IMAGE }}"
+             
+            # __DOCKER_REGISTRY_SERVER_PASSWORD__=${{ secrets.DOCKERHUB_TOKEN }},__DOCKER_REGISTRY_SERVER_URL__= ${{ secrets.DOCKER_REGISTRY_SERVER_URL }}, __DOCKER_REGISTRY_SERVER_USERNAME__=${{ secrets.DOCKERHUB_USERNAME }} 
               
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v1
