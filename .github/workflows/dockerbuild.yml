@@ -95,7 +95,7 @@ jobs:
 
         - name: Download Docker Image
           run: |
-            wget -q https://github.com/olaoyefaith/AquilaCMS/raw/main/docker_image.txt -O docker_image.txt
+            wget -q https://github.com/olaoyefaith/AquilaCMS.git/raw/main/docker_image.txt -O docker_image.txt
             DOCKER_IMAGE=$(cat docker_image.txt)
             echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
 
