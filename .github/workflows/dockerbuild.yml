@@ -9,7 +9,7 @@ on:
       - none
 
 env:
-  DOCKER_IMAGE: ""
+  # DOCKER_IMAGE: ""
   DOCKER_IMAGE_NAME: aquilacms
   LOCATION: westeurope
   INFRA_RESOURCE_GROUP: tfstate-resourcegroup
