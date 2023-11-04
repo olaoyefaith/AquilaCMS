@@ -20,9 +20,9 @@ resource "azurerm_linux_web_app" "fe-webapp" {
     "APPINSIGHTS_INSTRUMENTATIONKEY"                  = azurerm_application_insights.fg-appinsights.instrumentation_key
     "APPINSIGHTS_PROFILERFEATURE_VERSION"             = "1.0.0"
     "ApplicationInsightsAgent_EXTENSION_VERSION"      = "~2"
-    "DOCKER_REGISTRY_SERVER_PASSWORD"           = var.DOCKER_REGISTRY_SERVER_PASSWORD
-    "DOCKER_REGISTRY_SERVER_URL"                = var.DOCKER_REGISTRY_SERVER_URL
-    "DOCKER_REGISTRY_SERVER_USERNAME"           = var.DOCKER_REGISTRY_SERVER_USERNAME
+    "DOCKER_REGISTRY_SERVER_PASSWORD"                 = ""
+    "DOCKER_REGISTRY_SERVER_URL"                      = "https://index.docker.io"
+    "DOCKER_REGISTRY_SERVER_USERNAME"                 = ""
 
   }
 
