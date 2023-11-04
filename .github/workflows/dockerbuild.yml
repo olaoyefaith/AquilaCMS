@@ -79,7 +79,11 @@ jobs:
       - name: Store Docker Image
         run: echo "${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.IMAGE_TAG }}" > docker_image.txt
       
-      
+      - name: Upload Docker Image Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-image
+          path: docker_image.txt 
         
   deploy-app-service:
        name: Deploy three tier application to azure
@@ -93,11 +97,12 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
 
-        - name: Download Docker Image
-          run: |
-            wget -q https://github.com/olaoyefaith/AquilaCMS.git/raw/main/docker_image.txt -O docker_image.txt
-            DOCKER_IMAGE=$(cat docker_image.txt)
-            echo "DOCKER_IMAGE=$DOCKER_IMAGE" >> $GITHUB_ENV
+        - name: Download Docker Image Artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: docker-image
+        - name: Set DOCKER_IMAGE environment variable
+          run: echo "DOCKER_IMAGE=$(cat docker_image.txt)" >> $GITHUB_ENV
 
         - name: Login to Azure
           uses: azure/login@v1
