@@ -170,9 +170,9 @@ jobs:
           working-directory: infrastructure
           continue-on-error: true
   
-        - name: Terraform apply
-          run: terraform apply -auto-approve
-          working-directory: infrastructure
+        # - name: Terraform apply
+        #   run: terraform apply -auto-approve
+        #   working-directory: infrastructure
   
         # - name: Terraform destroy
         #   run: terraform destroy -auto-approve
