@@ -120,6 +120,7 @@ jobs:
         - name: Set DOCKER_IMAGE environment variable
           run: |
                 echo "DOCKER_IMAGE=$(cat docker_image.txt/docker_image.txt)" >> $GITHUB_ENV
+
                 echo "DOCKER_IMAGE_TAG=$(cat docker_image_tag.txt/docker_image_tag.txt)" >> $GITHUB_ENV  
         - name: Login to Azure
           uses: azure/login@v1
@@ -156,8 +157,7 @@ jobs:
           with:
             files: infrastructure/config.tfvars
             replacements: |
-                __DOCKER_IMAGE_TAG__ = ${{ env.DOCKER_IMAGE_TAG }}
-                __DOCKER_IMAGE__ = ${{ env.DOCKER_IMAGE }}
+                __DOCKER_IMAGE_TAG__ = ${{ env.DOCKER_IMAGE_TAG }}, __DOCKER_IMAGE__ = ${{ env.DOCKER_IMAGE }}
              
            
         - name: Setup Terraform
