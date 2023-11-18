@@ -1,12 +1,20 @@
 node_modules
-infrastructure/config.tfvars
+**/config.tfvars
+**/.terraform.lock.hcl
+**/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.3.0/windows_amd64/terraform-provider-azurerm_v3.3.0_x5.exe
+**/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.7.0/windows_amd64/terraform-provider-azurerm_v3.7.0_x5.exe
+**/terraform.tfstate.backup
+**/terraform.tfstate
+
+
+
 .travis.yml
 
 *.swp
 .tmp
 
 # YARN
-.pnp*
+.pnp
 .yarn
 yarn.lock
 yarn-error.log

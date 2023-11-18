@@ -12,9 +12,9 @@ output "resource_group_id" {
   value = azurerm_resource_group.rg.id
 }
 
-#Create frontend subnet
+#Create subnet
 resource "azurerm_subnet" "fe-subnet" {
-  name                 = "fe-subnet"
+  name                 = "virtual-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.0.0/26"]
@@ -37,31 +37,4 @@ resource "azurerm_subnet" "fe-subnet" {
     ]
   }
 }
-
-#Create backend subnet
-resource "azurerm_subnet" "be-subnet" {
-  name                 = "be-subnet"
-  resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.0.64/26"]
-  service_endpoints = ["Microsoft.AzureCosmosDB"]
-
-  delegation {
-    name = "delegation"
-
-    service_delegation {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action","Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"]
-    }
-
-
-  }
-
-  lifecycle {
-    ignore_changes = [
-      delegation,
-    ]
-  }
-}
-
 
