@@ -73,8 +73,10 @@ jobs:
           severity: MEDIUM,HIGH,CRITICAL
 
       - name: Set Docker Image Output
-        run: echo DOCKER_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
-        id: set-docker-image
+        run:  |
+             echo DOCKER_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}" >> $GITHUB_ENV
+             echo DOCKER_IMAGE_TAG = "${{ env.IMAGE_TAG }}" >> $GITHUB_ENV
+     
         
       - name: Store Docker Image
         run: |
@@ -107,10 +109,16 @@ jobs:
           uses: actions/download-artifact@v2
           with:
             name: docker-image
+              
+        - name: Download Docker Image Artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: docker-image-tag
+
         - name: Set DOCKER_IMAGE environment variable
           run: |
-                echo "DOCKER_IMAGE=$(cat docker_image.txt)" >> $GITHUB_ENV
-                echo "DOCKER_IMAGE_TAG=$(cat docker_image_tag.txt)" >> $GITHUB_ENV  
+                echo "DOCKER_IMAGE=$(cat docker-image)" >> $GITHUB_ENV
+                echo "DOCKER_IMAGE_TAG=$(cat docker-image-tag)" >> $GITHUB_ENV  
         - name: Login to Azure
           uses: azure/login@v1
           with:
@@ -149,8 +157,7 @@ jobs:
                 __DOCKER_IMAGE_TAG__ = ${{ env.DOCKER_IMAGE_TAG }}
                 __DOCKER_IMAGE__ = ${{ env.DOCKER_IMAGE }}
              
-            # __DOCKER_REGISTRY_SERVER_PASSWORD__=${{ secrets.DOCKERHUB_TOKEN }},__DOCKER_REGISTRY_SERVER_URL__= ${{ secrets.DOCKER_REGISTRY_SERVER_URL }}, __DOCKER_REGISTRY_SERVER_USERNAME__=${{ secrets.DOCKERHUB_USERNAME }} 
-              
+           
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v1
           with:
