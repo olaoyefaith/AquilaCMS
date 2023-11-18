@@ -1,4 +1,3 @@
 location-rg = "uksouth"
-
 DOCKER_IMAGE_TAG = __DOCKER_IMAGE_TAG__
 DOCKER_IMAGE =  __DOCKER_IMAGE__
