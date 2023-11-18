@@ -13,8 +13,8 @@ resource "azurerm_linux_web_app" "fe-webapp" {
     always_on = true
    application_stack{
      
-      docker_image = var.docker_image
-      docker_image_tag = var.docker_image_tag 
+      docker_image = var.DOCKER_IMAGE
+      docker_image_tag = var.DOCKER_IMAGE_TAG
      }
   }
 

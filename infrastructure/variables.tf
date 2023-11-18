@@ -4,12 +4,12 @@ variable "location-rg" {
   default     = "westeurope"
   
 }
-variable "docker_image_tag" {
+variable "DOCKER_IMAGE" {
   description = "this is the dockerimage for the application"
   type        = string
 }
 
-variable "docker_image" {
+variable "DOCKER_IMAGE_TAG" {
   description = "this is the dockerserver passwrd for the application"
   type        = string
 }
