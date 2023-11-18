@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    name: build docker imaages
+    name: build docker images
     runs-on: ubuntu-latest
 
     steps:
@@ -86,6 +86,12 @@ jobs:
         with:
           name: docker-image
           path: docker_image.txt 
+         
+      - name: Upload Docker Image Artifact
+        uses: actions/upload-artifact@v2
+        with:
+         name: docker-image-tag
+         path: docker_image_tag.txt  
         
   deploy-app-service:
        name: Deploy three tier application to azure
@@ -140,7 +146,7 @@ jobs:
           with:
             files: infrastructure/config.tfvars
             replacements: |
-                __DOCKER_IMAGE_TAG__= ${{ env.DOCKER_IMAGE_TAG }}
+                __DOCKER_IMAGE_TAG__ = ${{ env.DOCKER_IMAGE_TAG }}
                 __DOCKER_IMAGE__ = ${{ env.DOCKER_IMAGE }}
              
             # __DOCKER_REGISTRY_SERVER_PASSWORD__=${{ secrets.DOCKERHUB_TOKEN }},__DOCKER_REGISTRY_SERVER_URL__= ${{ secrets.DOCKER_REGISTRY_SERVER_URL }}, __DOCKER_REGISTRY_SERVER_USERNAME__=${{ secrets.DOCKERHUB_USERNAME }} 
