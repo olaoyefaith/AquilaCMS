@@ -57,11 +57,10 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       
-    
       - name: Replace Variables in terraform.tfvars
         uses: datamonsters/replace-action@v2
         with:
-           files: infrastructure/azurewebapp.tf
+         files: infrastructure/azurewebapp.tf
          replacements: |
           __DOCKER_IMAGE_TAG__ = "${{ env.DOCKER_IMAGE_TAG }}", __DOCKER_IMAGE__ = "${{ env.DOCKER_IMAGE }}"
 
