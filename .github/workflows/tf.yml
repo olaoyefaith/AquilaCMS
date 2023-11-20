@@ -32,24 +32,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Download Docker Image Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-image
-          path: docker_image.txt  
-            
-      - name: Download Docker Image Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-image-tag
-          path: docker_image_tag.txt
+        uses: actions/checkout@v2 
 
       - name: Set DOCKER_IMAGE environment variable
         run: |
-              echo "DOCKER_IMAGE=$(cat docker_image.txt/docker_image.txt)" >> $GITHUB_ENV
+              echo "DOCKER_IMAGE=olaoyefaith/aquilacms" >> $GITHUB_ENV
 
-              echo "DOCKER_IMAGE_TAG=$(cat docker_image_tag.txt/docker_image_tag.txt)" >> $GITHUB_ENV  
+              echo "DOCKER_IMAGE_TAG=20231120144356" >> $GITHUB_ENV  
       - name: Login to Azure
         uses: azure/login@v1
         with:
