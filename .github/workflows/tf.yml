@@ -38,7 +38,7 @@ jobs:
         run: |
               echo "DOCKER_IMAGE=olaoyefaith/aquilacms" >> $GITHUB_ENV
 
-              echo "DOCKER_IMAGE_TAG=20231120144356" >> $GITHUB_ENV  
+              echo "DOCKER_IMAGE_TAG=20231120160204" >> $GITHUB_ENV  
       - name: Login to Azure
         uses: azure/login@v1
         with:
