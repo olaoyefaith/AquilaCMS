@@ -157,7 +157,7 @@ jobs:
           with:
             files: infrastructure/azurewebapp.tf
             replacements: |
-                __DOCKER_IMAGE_TAG__ = ${{ env.DOCKER_IMAGE_TAG }}, __DOCKER_IMAGE__ = ${{ env.DOCKER_IMAGE }}
+                __DOCKER_IMAGE_TAG__ = "${{ env.DOCKER_IMAGE_TAG }}", __DOCKER_IMAGE__ = "${{ env.DOCKER_IMAGE }}"
              
            
         - name: Setup Terraform
@@ -193,7 +193,7 @@ jobs:
           run: terraform plan -var-file="config.tfvars"
           working-directory: infrastructure
           continue-on-error: true
-          
+
         - name: Terraform apply
           env:
            ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
