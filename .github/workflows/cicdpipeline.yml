@@ -155,9 +155,9 @@ jobs:
         - name: Replace Variables in terraform.tfvars
           uses: datamonsters/replace-action@v2
           with:
-            files: infrastructure/config.tfvars
+            files: infrastructure/azurewebapp.tf
             replacements: |
-                __DOCKER_IMAGE_TAG__ = ${{ env.DOCKER_IMAGE_TAG }},__DOCKER_IMAGE__ = ${{ env.DOCKER_IMAGE }}
+                __DOCKER_IMAGE_TAG__ = ${{ env.DOCKER_IMAGE_TAG }}, __DOCKER_IMAGE__ = ${{ env.DOCKER_IMAGE }}
              
            
         - name: Setup Terraform
