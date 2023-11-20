@@ -3,7 +3,7 @@ name: build and deploy two tier application to azure app service
 on:
   push:
     branches:
-      - none
+      - main
   pull_request:
     branches:
       - none
@@ -33,6 +33,37 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Download Docker Image Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-image
+          path: docker_image.txt  
+            
+      - name: Download Docker Image Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-image-tag
+          path: docker_image_tag.txt
+
+      - name: Set DOCKER_IMAGE environment variable
+        run: |
+              echo "DOCKER_IMAGE=$(cat docker_image.txt/docker_image.txt)" >> $GITHUB_ENV
+
+              echo "DOCKER_IMAGE_TAG=$(cat docker_image_tag.txt/docker_image_tag.txt)" >> $GITHUB_ENV  
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+    
+      - name: Replace Variables in terraform.tfvars
+        uses: datamonsters/replace-action@v2
+        with:
+           files: infrastructure/azurewebapp.tf
+         replacements: |
+          __DOCKER_IMAGE_TAG__ = "${{ env.DOCKER_IMAGE_TAG }}", __DOCKER_IMAGE__ = "${{ env.DOCKER_IMAGE }}"
 
       - name: Terraform Init (Azure Backend)
         id: init
