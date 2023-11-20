@@ -3,7 +3,7 @@ name: build and deploy two tier application to azure app service
 on:
   push:
     branches:
-      - main
+      - none
   pull_request:
     branches:
       - none
