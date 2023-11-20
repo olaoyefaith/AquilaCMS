@@ -1,9 +1,9 @@
-name: build and deploy two tier application to azure app service
+name: destroy terraform resources
 
 on:
   push:
     branches:
-      - main
+      - none
   pull_request:
     branches:
       - none
@@ -46,7 +46,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Create storage for tfstate
+      - name: retrieve access key for tfstate
         uses: azure/CLI@v1
         with:
           azcliversion: 2.35.0

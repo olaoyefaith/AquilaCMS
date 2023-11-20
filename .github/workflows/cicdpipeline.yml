@@ -3,7 +3,7 @@ name: build and deploy two tier application to azure app service
 on:
   push:
     branches:
-      - none
+      - main
   pull_request:
     branches:
       - none
@@ -96,7 +96,7 @@ jobs:
          path: docker_image_tag.txt  
         
   deploy-app-service:
-       name: Deploy three tier application to azure
+       name: Deploy two tier application to azure
        runs-on: ubuntu-latest
        needs:
         - build-and-deploy
