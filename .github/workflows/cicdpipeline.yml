@@ -157,7 +157,7 @@ jobs:
           with:
             files: infrastructure/azurewebapp.tf
             replacements: |
-                __DOCKER_IMAGE_TAG__ = "${{ env.DOCKER_IMAGE_TAG }}", __DOCKER_IMAGE__ = "${{ env.DOCKER_IMAGE }}"
+                __DOCKER_IMAGE_TAG__ = "20231120074807", __DOCKER_IMAGE__ = "olaoye/aquilacms"
              
            
         - name: Setup Terraform
@@ -183,16 +183,16 @@ jobs:
           run: terraform validate -no-color
           working-directory: infrastructure
           
-        - name: Terraform Plan
-          id: plan
-          env:
-            ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-            ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-            ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-            ARM_USE_OIDC: true
-          run: terraform plan -var-file="config.tfvars"
-          working-directory: infrastructure
-          continue-on-error: true
+    #    - name: Terraform Plan
+      #    id: plan
+      #    env:
+       #     ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+       #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+       #     ARM_USE_OIDC: true
+      #    run: terraform plan -var-file="config.tfvars"
+      #    working-directory: infrastructure
+       #   continue-on-error: true
 
         
         
