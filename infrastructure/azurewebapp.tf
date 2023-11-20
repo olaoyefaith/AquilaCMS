@@ -13,8 +13,8 @@ resource "azurerm_linux_web_app" "fe-webapp" {
     always_on = true
    application_stack{
      
-      docker_image = var.docker_image
-      docker_image_tag = var.docker_image_tag
+      docker_image = __DOCKER_IMAGE__ #"olaoyefaith/aquilacms" 
+      docker_image_tag = __DOCKER_IMAGE_TAG__  #"20231119153622" #
      }
   }
 
