@@ -79,6 +79,7 @@ This project showcases a modern and automated approach to deploying and managing
       ![Alt text](images/loganalytics.png)
 
 ###  Execute CI/CD Pipeline
+
  ![Alt text](images/dockerpipeline.png)
  ![Alt text](images/deploymentipeline.png)
  ![Alt text](images/destroyinfrastructure.png)
