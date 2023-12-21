@@ -25,12 +25,6 @@ This project entails the creation of a scalable two-tier infrastructure on Micro
 - **Proactive Monitoring:** Azure Application Insights enables proactive monitoring of Web App performance, availability, and usage.
 - **Logging Integration:** Seamless integration capturing application logs and telemetry data for real-time insights and troubleshooting.
 
-### Benefits and Outcomes:
-
-- **Automation and Efficiency:** Terraform and GitHub Actions streamline deployment, reducing manual intervention and minimizing errors.
-- **Scalability and Reliability:** Two-tier architecture with Azure services ensures scalability and reliability for growing workloads.
-- **Observability:** Azure Application Insights provides comprehensive monitoring and logging, empowering teams with insights to optimize application performance.
-
 ### Scaling Policies and Security Measures:
 
 - **Scaling Policies:** Implementing auto-scaling policies for Web App and Cosmos DB to adjust resources dynamically.
@@ -41,7 +35,7 @@ This project entails the creation of a scalable two-tier infrastructure on Micro
 1. **Set up Azure OpenID Connect (OIDC) within GitHub Actions for Terraform:**
    - implemented authentication using OpenID Connect (OIDC) within GitHub Actions and Utilized OIDC tokens to authenticate and authorize Terraform operations.
    - Configure necessary environment variables for authentication.
-![Alt text](images/)
+![Alt text](images/aquilaoidc.png)
 
 2. **Define Terraform Configuration:**
    - Create Terraform scripts defining infrastructure components.
@@ -72,6 +66,8 @@ resource "azurerm_linux_web_app" "fe-webapp" {
 3. **Set up Dockerfile and GitHub Actions Workflow:**
    - Write a Dockerfile to containerize the application.
    - Create a GitHub Actions workflow YAML file to define the CI/CD pipeline.
+   
+![Alt text](images/aquiladocker.png)
 
 4. **Integrate Docker Image with Terraform:**
    - Modify Terraform scripts for the Linux Web App to accept Docker image tags.
