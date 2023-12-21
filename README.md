@@ -25,11 +25,6 @@ This project entails the creation of a scalable two-tier infrastructure on Micro
 - **Proactive Monitoring:** Azure Application Insights enables proactive monitoring of Web App performance, availability, and usage.
 - **Logging Integration:** Seamless integration capturing application logs and telemetry data for real-time insights and troubleshooting.
 
-### Scaling Policies and Security Measures:
-
-- **Scaling Policies:** Implementing auto-scaling policies for Web App and Cosmos DB to adjust resources dynamically.
-- **Security Measures:** Enhancements include Azure Key Vault integration for sensitive information storage and Azure Security Center for threat detection and response.
-
 ### Steps:
 
 1. **Set up Azure OpenID Connect (OIDC) within GitHub Actions for Terraform:**
@@ -66,7 +61,8 @@ resource "azurerm_linux_web_app" "fe-webapp" {
 3. **Set up Dockerfile and GitHub Actions Workflow:**
    - Write a Dockerfile to containerize the application.
    - Create a GitHub Actions workflow YAML file to define the CI/CD pipeline.
-   
+![Alt text](images/dockerpipeline.png)
+
 ![Alt text](images/aquiladocker.png)
 
 4. **Integrate Docker Image with Terraform:**
@@ -77,6 +73,8 @@ resource "azurerm_linux_web_app" "fe-webapp" {
 5. **Provision Azure Resources with Terraform:**
    - Run `terraform init` and `terraform apply` to provision infrastructure on Azure.
 ![Terraform state ](images/tfstatestorage.png)
+
+![Alt text](images/deploymentipeline.png)
 
 ![Destroy Infrastructure](images/destroyinfrastructure.png)
 
@@ -93,6 +91,8 @@ resource "azurerm_linux_web_app" "fe-webapp" {
  ![Deployed Infrastructure](images/deployedinfrastructure.png)
 
 ![Aquila Result](images/aquilaresult.png)
+
+![Alt text](images/mongodbconnection.png)
 
 8. **Monitor and Troubleshoot:**
    - Utilize Azure Portal to monitor deployed resources in Application Insights.
