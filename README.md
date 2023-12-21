@@ -1,95 +1,110 @@
-## Modern Two-Tier Infrastructure Deployment on Azure with CI/CD
+## Automated Deployment of Modern Two-Tier Infrastructure on Azure with CI/CD
 
-## Overview:
-This project involves the creation of a robust and scalable two-tier infrastructure on Microsoft Azure using Terraform. The architecture consists of a Linux Web App and Cosmos DB for MongoDB, with automated deployment facilitated by GitHub Actions as the Continuous Integration/Continuous Deployment (CI/CD) pipeline. Additionally, monitoring and logging are implemented using Azure Application Insights, ensuring comprehensive observability of the entire system.
+### Overview:
 
-Project Components:
+This project entails the creation of a scalable two-tier infrastructure on Microsoft Azure using Terraform. The architecture features a Linux Web App and Cosmos DB for MongoDB, with GitHub Actions orchestrating the Continuous Integration/Continuous Deployment (CI/CD) pipeline. Azure Application Insights is integrated for monitoring and logging, providing comprehensive observability.
 
-## Azure Resources Provisioned with Terraform:
+### Project Components:
 
-Linux Web App: A scalable and reliable Linux-based Web App is provisioned using Terraform, ensuring infrastructure as code (IaC) principles for consistency and reproducibility.
-Cosmos DB for MongoDB: The NoSQL database layer is powered by Cosmos DB, providing high availability and global distribution. The Terraform scripts automate the provisioning of Cosmos DB to seamlessly integrate with the Web App.
-CI/CD Pipeline with GitHub Actions:
+#### Azure Resources Provisioned with Terraform:
 
-Docker Containerization: The application is containerized using Docker, allowing for easy deployment and consistency across various environments.
-GitHub Actions Workflow: The CI/CD pipeline is orchestrated through GitHub Actions. Upon code changes or merges into the designated branch, the workflow triggers Docker image building and pushing to DockerHub.
+- **Linux Web App:** A reliable Linux-based Web App is provisioned for consistency and reproducibility.
+- **Cosmos DB for MongoDB:** Automated provisioning of Cosmos DB for seamless integration with the Web App.
 
-Integration of Docker Image with Terraform: The pipeline is setup in a way that, the Docker image build output is replaced in the Azure Terraform configuration for the Linux Web App. Therefore it is dynamically updated, ensuring automatic deployment of the latest version.
-Monitoring and Logging with Azure Application Insights:
+#### CI/CD Pipeline with GitHub Actions:
 
-Proactive Monitoring: Azure Application Insights is provisioned with Terraform to enable proactive monitoring of the Web App's performance, availability, and usage.
-Logging Integration: Logging is seamlessly integrated, capturing application logs and telemetry data. This ensures real-time insights into the application's behavior and aids in troubleshooting.
+- **Docker Containerization:** Application containerization using Docker for deployment consistency.
+- **GitHub Actions Workflow:** Orchestration of the CI/CD pipeline triggers Docker image building and pushing to DockerHub.
 
-## Benefits and Outcomes:
-Automation and Efficiency: The use of Terraform for infrastructure provisioning and GitHub Actions for CI/CD streamlines the deployment process, reducing manual intervention and minimizing errors.
-Scalability and Reliability: The two-tier architecture, coupled with Azure services, ensures scalability and reliability, accommodating growing workloads and maintaining high availability.
-Observability: Azure Application Insights provides comprehensive monitoring and logging, empowering the development and operations teams with insights to optimize application performance and detect issues early.
+#### Integration of Docker Image with Terraform:
 
+- The Docker image build output is dynamically updated in the Azure Terraform configuration for the Linux Web App, ensuring automatic deployment of the latest version.
 
-Scaling Policies: Implementing auto-scaling policies for both the Web App and Cosmos DB to dynamically adjust resources based on demand.
-Security Measures: Enhancing security measures, such as Azure Key Vault integration for sensitive information storage and Azure Security Center for threat detection and response.
+#### Monitoring and Logging with Azure Application Insights:
 
-## Conclusion:
-This project showcases a modern and automated approach to deploying and managing a two-tier infrastructure on Azure. By leveraging Terraform, GitHub Actions, and Azure services, the development and deployment processes are streamlined, leading to a robust and scalable solution with comprehensive monitoring and logging capabilities.
+- **Proactive Monitoring:** Azure Application Insights enables proactive monitoring of Web App performance, availability, and usage.
+- **Logging Integration:** Seamless integration capturing application logs and telemetry data for real-time insights and troubleshooting.
 
-## Steps:
+### Benefits and Outcomes:
 
+- **Automation and Efficiency:** Terraform and GitHub Actions streamline deployment, reducing manual intervention and minimizing errors.
+- **Scalability and Reliability:** Two-tier architecture with Azure services ensures scalability and reliability for growing workloads.
+- **Observability:** Azure Application Insights provides comprehensive monitoring and logging, empowering teams with insights to optimize application performance.
 
-###  Set up Azure Service Principal for Terraform
+### Scaling Policies and Security Measures:
 
-1.1. Create an Azure Service Principal for Terraform to interact with Azure resources.
+- **Scaling Policies:** Implementing auto-scaling policies for Web App and Cosmos DB to adjust resources dynamically.
+- **Security Measures:** Enhancements include Azure Key Vault integration for sensitive information storage and Azure Security Center for threat detection and response.
 
-1.2. Configure the necessary environment variables, such as `ARM_CLIENT_ID`, `ARM_CLIENT_SECRET`, `ARM_SUBSCRIPTION_ID`, and `ARM_TENANT_ID`, to authenticate Terraform with Azure.
+### Steps:
 
-### Define Terraform Configuration
+1. **Set up Azure OpenID Connect (OIDC) within GitHub Actions for Terraform:**
+   - implemented authentication using OpenID Connect (OIDC) within GitHub Actions and Utilized OIDC tokens to authenticate and authorize Terraform operations.
+   - Configure necessary environment variables for authentication.
+![Alt text](images/)
 
-2.1. Create Terraform scripts to define the infrastructure components, including the Linux Web App and Cosmos DB. Ensure to parameterize variables for flexibility.
+2. **Define Terraform Configuration:**
+   - Create Terraform scripts defining infrastructure components.
+   - Utilize Terraform modules for reusability and maintainability.
+```
 
-2.2. Utilize Terraform modules for reusability and maintainability.
-
-###  Set up Dockerfile and GitHub Actions Workflow
-
-3.1. Write a Dockerfile to containerize your application.
-
-3.2. Create a GitHub Actions workflow YAML file (`/.github/workflows/main.yml`) to define the CI/CD pipeline.
-   - Trigger the workflow on code pushes or pull requests.
-   - Build and push the Docker image to DockerHub.
-   - Set the Docker image tag as an environment variable.
-
-###  Integrate Docker Image with Terraform
-
-4.1. Modify the Terraform scripts for the Linux Web App to accept the Docker image tag as a variable.
-
-4.2. Use the environment variable passed by GitHub Actions to dynamically update the Docker image tag in the Terraform configuration.
-
-###  Provision Azure Resources with Terraform
-
-5.1. Run `terraform init` and `terraform apply` to provision the infrastructure on Azure.
-  ![Alt text](images/deployedinfrastructure.png)
-   ![Alt text](images/aquilaresult.png)
+resource "azurerm_linux_web_app" "fe-webapp" {
+  name                  = "Aquila-frontend"
+  location              = azurerm_resource_group.rg.location
+  resource_group_name   = azurerm_resource_group.rg.name
+  service_plan_id       = azurerm_service_plan.fe-asp.id
+  https_only            = true
   
+ site_config { 
+    container_registry_use_managed_identity = true
+     minimum_tls_version =  "1.2"
+    always_on = true
+   application_stack{
+     
+      docker_image = __DOCKER_IMAGE__ 
+      docker_image_tag = __DOCKER_IMAGE_TAG__
+     }
+  }
+  }
+
+```
+  
+3. **Set up Dockerfile and GitHub Actions Workflow:**
+   - Write a Dockerfile to containerize the application.
+   - Create a GitHub Actions workflow YAML file to define the CI/CD pipeline.
+
+4. **Integrate Docker Image with Terraform:**
+   - Modify Terraform scripts for the Linux Web App to accept Docker image tags.
+   - Dynamically update Docker image tags in Terraform configuration using GitHub Actions.
 
 
-###  Implement Monitoring and Logging with Azure Application Insights
-   
-6.1. Integrate Azure Application Insights into the Terraform scripts for both the Web App and Cosmos DB.
+5. **Provision Azure Resources with Terraform:**
+   - Run `terraform init` and `terraform apply` to provision infrastructure on Azure.
+![Terraform state ](images/tfstatestorage.png)
 
-6.2. Configure the necessary telemetry settings and logging options.
-     ![Alt text](images/applicationinsight.png)
-      ![Alt text](images/loganalytics.png)
+![Destroy Infrastructure](images/destroyinfrastructure.png)
 
-###  Execute CI/CD Pipeline
+6. **Implement Monitoring and Logging with Azure Application Insights:**
+   - Integrate Azure Application Insights into Terraform scripts for Web App and Cosmos DB.
+   - Configure telemetry settings and logging options.
 
- ![Alt text](images/dockerpipeline.png)
- ![Alt text](images/deploymentipeline.png)
- ![Alt text](images/destroyinfrastructure.png)
+![Log Analytics](images/loganalytics.png)
 
-7.1. Commit and push code changes to trigger the GitHub Actions workflow.
+7. **Execute CI/CD Pipeline:**
+   - Trigger GitHub Actions workflow with code changes.
+   - Observe workflow executing build, Docker image push, and Terraform configuration update.
 
-7.2. Observe the workflow executing the build, pushing the Docker image, and updating the Terraform configuration.
+ ![Deployed Infrastructure](images/deployedinfrastructure.png)
 
-###  Monitor and Troubleshoot
+![Aquila Result](images/aquilaresult.png)
 
-8.1. Utilize Azure Portal to monitor the deployed resources in Application Insights.
+8. **Monitor and Troubleshoot:**
+   - Utilize Azure Portal to monitor deployed resources in Application Insights.
+   - Review logs and telemetry data for troubleshooting and performance optimization.
 
-8.2. Review logs and telemetry data to troubleshoot and optimize application performance.
+![Application Insights](images/applicationinsight.png)
+
+
+
+
+
